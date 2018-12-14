@@ -30,16 +30,21 @@
         </license>
     </licenses>
 
+    <distributionManagement>
+        <repository>
+            <id>zcckj_releases</id>
+            <url>http://nexus.zcckj.com/repository/zcckj_releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>zcckj_snapshots</id>
+            <url>http://nexus.zcckj.com/repository/zcckj_snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
     <groupId>com.maihaoche</groupId>
     <artifactId>spring-boot-starter-rocketmq</artifactId>
-    <version>0.1.0</version>
-
-    <scm>
-        <url>https://github.com/maihaoche/rocketmq-spring-boot-starter</url>
-        <connection>scm:git:git://github.com/maihaoche/rocketmq-spring-boot-starter.git</connection>
-        <developerConnection>scm:git:git@github.com:maihaoche/rocketmq-spring-boot-starter.git</developerConnection>
-    </scm>
+    <version>0.1.2</version>
 
     <developers>
         <developer>
@@ -133,16 +138,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <distributionManagement>
-                <repository>
-                    <id>zcckj_releases</id>
-                    <url>http://nexus.zcckj.com/repository/zcckj_releases/</url>
-                </repository>
-                <snapshotRepository>
-                    <id>zcckj_snapshots</id>
-                    <url>http://nexus.zcckj.com/repository/zcckj_snapshots/</url>
-                </snapshotRepository>
-            </distributionManagement>
         </profile>
     </profiles>
     <build>

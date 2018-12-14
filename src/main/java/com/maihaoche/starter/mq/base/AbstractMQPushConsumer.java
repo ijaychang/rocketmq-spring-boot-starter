@@ -31,10 +31,10 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
      * 继承这个方法处理消息
      * @see MessageExtConst
      * @param message 消息范型
-     * @param extMap 存放消息附加属性的map, map中的key存放在 @link MessageExtConst 中
+     * @param messageExt 存放消息附加属性MessageExt
      * @return 处理结果
      */
-    public abstract boolean process(T message, Map<String, Object> extMap);
+    public abstract boolean process(T message, MessageExt messageExt);
 
     /**
      * 原生dealMessage方法，可以重写此方法自定义序列化和返回消费成功的相关逻辑
@@ -49,8 +49,7 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
             // parse message body
             T t = parseMessage(messageExt);
             // parse ext properties
-            Map<String, Object> ext = parseExtParam(messageExt);
-            if( null != t && !process(t, ext)) {
+            if( null != t && !process(t, messageExt)) {
                 log.warn("consume fail , ask for re-consume , msgId: {}", messageExt.getMsgId());
                 return ConsumeConcurrentlyStatus.RECONSUME_LATER;
             }
@@ -70,7 +69,7 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
             log.info("receive msgId: {}, tags : {}" , messageExt.getMsgId(), messageExt.getTags());
             T t = parseMessage(messageExt);
             Map<String, Object> ext = parseExtParam(messageExt);
-            if( null != t && !process(t, ext)) {
+            if( null != t && !process(t, messageExt)) {
                 log.warn("consume fail , ask for re-consume , msgId: {}", messageExt.getMsgId());
                 return ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;
             }
