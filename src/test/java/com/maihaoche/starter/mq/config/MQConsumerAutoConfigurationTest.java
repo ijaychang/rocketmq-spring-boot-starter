@@ -3,6 +3,7 @@ package com.maihaoche.starter.mq.config;
 import com.maihaoche.starter.mq.annotation.MQConsumer;
 import com.maihaoche.starter.mq.base.AbstractMQPushConsumer;
 import com.maihaoche.starter.mq.base.MessageExtConst;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.boot.test.util.EnvironmentTestUtils;
@@ -99,7 +100,7 @@ public class MQConsumerAutoConfigurationTest {
     @MQConsumer(consumerGroup = "test_consumer_group", topic = "test_topic")
     static class TestConsumer extends AbstractMQPushConsumer<String> {
         @Override
-        public boolean process(String message, Map<String, Object> extMap) {
+        public boolean process(String message, MessageExt messageExt) {
             return true;
         }
     }
@@ -108,7 +109,7 @@ public class MQConsumerAutoConfigurationTest {
     @MQConsumer(consumerGroup = "test_consumer_group", topic = "test_topic", consumeMode = MessageExtConst.CONSUME_MODE_ORDERLY)
     static class TestConsumerOrderly extends AbstractMQPushConsumer<String> {
         @Override
-        public boolean process(String message, Map<String, Object> extMap) {
+        public boolean process(String message, MessageExt messageExt) {
             return true;
         }
     }
@@ -117,7 +118,7 @@ public class MQConsumerAutoConfigurationTest {
     @MQConsumer(consumerGroup = "test_consumer_group", topic = "test_topic", consumeMode = "TYPE_MESSAGE_MODE")
     static class TestConsumerErrorCM extends AbstractMQPushConsumer<String> {
         @Override
-        public boolean process(String message, Map<String, Object> extMap) {
+        public boolean process(String message, MessageExt messageExt) {
             return true;
         }
     }
