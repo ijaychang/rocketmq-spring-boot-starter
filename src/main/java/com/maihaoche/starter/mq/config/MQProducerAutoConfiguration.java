@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,9 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
     @Setter
     private static DefaultMQProducer producer;
 
+    @Autowired
+    private MQProperties mqProperties;
+
     @Bean
     public DefaultMQProducer exposeProducer() throws Exception {
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(MQProducer.class);
@@ -40,7 +44,8 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
         if(producer == null) {
             Assert.notNull(mqProperties.getProducerGroup(), "producer group must be defined");
             Assert.notNull(mqProperties.getNameServerAddress(), "name server address must be defined");
-            producer = new DefaultMQProducer(mqProperties.getProducerGroup());
+            // 添加producerGroup后缀(用于区分不同的环境)
+            producer = new DefaultMQProducer(mqProperties.getProducerGroup() + mqProperties.getSuffix());
             producer.setNamesrvAddr(mqProperties.getNameServerAddress());
             producer.setSendMsgTimeout(mqProperties.getSendMsgTimeout());
             producer.setSendMessageWithVIPChannel(mqProperties.getVipChannelEnabled());
@@ -69,7 +74,8 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
                 AbstractMQTransactionProducer beanObj = AbstractMQTransactionProducer.class.cast(transactionProducer.getValue());
                 MQTransactionProducer anno = beanObj.getClass().getAnnotation(MQTransactionProducer.class);
 
-                TransactionMQProducer producer = new TransactionMQProducer(environment.resolvePlaceholders(anno.producerGroup()));
+                // 添加producerGroup后缀(用于区分不同的环境)
+                TransactionMQProducer producer = new TransactionMQProducer(environment.resolvePlaceholders(anno.producerGroup() + mqProperties.getProducerGroup()));
                 producer.setNamesrvAddr(mqProperties.getNameServerAddress());
                 producer.setExecutorService(executorService);
                 producer.setTransactionListener(beanObj);

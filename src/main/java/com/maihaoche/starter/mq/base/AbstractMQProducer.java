@@ -1,6 +1,7 @@
 package com.maihaoche.starter.mq.base;
 
 import com.maihaoche.starter.mq.MQException;
+import com.maihaoche.starter.mq.config.MQProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -26,6 +27,9 @@ public abstract class AbstractMQProducer {
     @Autowired
     private DefaultMQProducer producer;
 
+    @Autowired
+    private MQProperties mqProperties;
+
     /**
      * 同步发送消息
      * @param message  消息体
@@ -33,6 +37,7 @@ public abstract class AbstractMQProducer {
      */
     public void syncSend(Message message) throws MQException {
         try {
+            message.setTopic(message.getTopic()+mqProperties.getSuffix());
             SendResult sendResult = producer.send(message);
             log.debug("send rocketmq message ,messageId : {}", sendResult.getMsgId());
             this.doAfterSyncSend(message, sendResult);
@@ -50,6 +55,7 @@ public abstract class AbstractMQProducer {
      * @throws MQException 消息异常
      */
     public void syncSendOrderly(Message message, String hashKey) throws MQException {
+        message.setTopic(message.getTopic() + mqProperties.getSuffix());
         if(StringUtils.isEmpty(hashKey)) {
             // fall back to normal
             syncSend(message);
@@ -79,6 +85,7 @@ public abstract class AbstractMQProducer {
      */
     public void asyncSend(Message message, SendCallback sendCallback) throws MQException {
         try {
+            message.setTopic(message.getTopic()+mqProperties.getSuffix());
             producer.send(message, sendCallback);
             log.debug("send rocketmq message async");
         } catch (Exception e) {

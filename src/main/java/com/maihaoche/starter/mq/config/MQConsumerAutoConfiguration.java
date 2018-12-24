@@ -84,8 +84,9 @@ public class MQConsumerAutoConfiguration extends MQBaseAutoConfiguration {
         }
         Environment environment = applicationContext.getEnvironment();
 
-        String consumerGroup = environment.resolvePlaceholders(mqConsumer.consumerGroup());
-        String topic = environment.resolvePlaceholders(mqConsumer.topic());
+        // 给consumerGroup,topic添加后缀(用于区分不同环境)
+        String consumerGroup = environment.resolvePlaceholders(mqConsumer.consumerGroup()) + mqProperties.getSuffix();
+        String topic = environment.resolvePlaceholders(mqConsumer.topic()) + mqProperties.getSuffix();
         String tags = "*";
         if(mqConsumer.tag().length == 1) {
             tags = environment.resolvePlaceholders(mqConsumer.tag()[0]);
