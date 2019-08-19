@@ -44,7 +44,7 @@
 
     <groupId>com.maihaoche</groupId>
     <artifactId>spring-boot-starter-rocketmq</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
 
     <developers>
         <developer>
@@ -105,7 +105,7 @@
                             <execution>
                                 <phase>deploy</phase>
                                 <goals>
-                                    <goal>jar-no-fork</goal>
+                                    <goal>jar</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -116,9 +116,21 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <executions>
                             <execution>
-                                <phase>package</phase>
+                                <phase>deploy</phase>
                                 <goals>
                                     <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
                                 </goals>
                             </execution>
                         </executions>
