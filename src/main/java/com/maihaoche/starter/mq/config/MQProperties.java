@@ -37,4 +37,9 @@ public class MQProperties {
      */
     private String suffix = "";
 
+    /**
+     * 重试次数
+     */
+    private Integer retryTimesWhenSendFailed = 3;
+
 }

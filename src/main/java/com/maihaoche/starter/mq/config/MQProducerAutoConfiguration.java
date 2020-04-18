@@ -49,6 +49,7 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
             producer.setNamesrvAddr(mqProperties.getNameServerAddress());
             producer.setSendMsgTimeout(mqProperties.getSendMsgTimeout());
             producer.setSendMessageWithVIPChannel(mqProperties.getVipChannelEnabled());
+            producer.setRetryTimesWhenSendFailed(mqProperties.getRetryTimesWhenSendFailed());
             producer.start();
         }
         return producer;
