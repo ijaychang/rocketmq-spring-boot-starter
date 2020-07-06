@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -73,7 +74,7 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
         beans.entrySet().forEach( transactionProducer -> {
             try {
                 AbstractMQTransactionProducer beanObj = AbstractMQTransactionProducer.class.cast(transactionProducer.getValue());
-                MQTransactionProducer anno = beanObj.getClass().getAnnotation(MQTransactionProducer.class);
+                MQTransactionProducer anno = AnnotationUtils.findAnnotation(beanObj.getClass(),MQTransactionProducer.class);
 
                 // 添加producerGroup后缀(用于区分不同的环境)
                 TransactionMQProducer producer = new TransactionMQProducer(environment.resolvePlaceholders(anno.producerGroup() + mqProperties.getProducerGroup()));
