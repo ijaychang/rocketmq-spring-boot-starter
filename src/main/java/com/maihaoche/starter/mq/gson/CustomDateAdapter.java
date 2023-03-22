@@ -24,6 +24,12 @@ public class CustomDateAdapter extends TypeAdapter<Date> {
 
     private final List<DateFormat> dateFormats = new ArrayList<>();
 
+    public CustomDateAdapter() {
+        super();
+        addDateFormat(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.CHINESE); // yyyy-MM-dd HH:mm:ss
+        addDateFormat(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US); // Nov 2, 2020 10:46:51 AM
+        addDateFormat(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault()); // 根据服务器不一样而不一样
+    }
 
     /**
      * Creates a DateFormat with the given time and/or date style in the given
@@ -35,10 +41,6 @@ public class CustomDateAdapter extends TypeAdapter<Date> {
      *                  ignored if flags is 1
      * @param aLocale   the locale for the format
      */
-    public CustomDateAdapter(int dateStyle, int timeStyle, Locale aLocale) {
-        this.dateFormats.add(DateFormat.getDateTimeInstance(dateStyle, timeStyle, aLocale));
-    }
-
     public void addDateFormat(int dateStyle, int timeStyle, Locale aLocale) {
         this.dateFormats.add(DateFormat.getDateTimeInstance(dateStyle, timeStyle, aLocale));
     }
@@ -66,8 +68,8 @@ public class CustomDateAdapter extends TypeAdapter<Date> {
 
         try {
             return ISO8601Utils.parse(json, new ParsePosition(0));
-        } catch (ParseException var5) {
-            throw new JsonSyntaxException(json, var5);
+        } catch (ParseException parseException) {
+            throw new JsonSyntaxException(json, parseException);
         }
     }
 

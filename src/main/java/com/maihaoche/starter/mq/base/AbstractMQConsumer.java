@@ -1,13 +1,17 @@
 package com.maihaoche.starter.mq.base;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.bind.DateTypeAdapter;
+import com.maihaoche.starter.mq.gson.CustomDateAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +23,10 @@ import java.util.Map;
 @Slf4j
 public abstract class AbstractMQConsumer<T> {
 
-    protected static Gson gson = new Gson();
+    protected static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Date.class, new DateTypeAdapter())
+            .registerTypeAdapter(Date.class, new CustomDateAdapter())
+            .create();
 
     /**
      * 反序列化解析消息

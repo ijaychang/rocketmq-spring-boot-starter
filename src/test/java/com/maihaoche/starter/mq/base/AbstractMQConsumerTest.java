@@ -14,17 +14,8 @@ import java.util.Locale;
 public class AbstractMQConsumerTest {
     @Test
     public void parseMessage() {
-        CustomDateAdapter customDateAdapter = new CustomDateAdapter(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.CHINESE);
-        customDateAdapter.addDateFormat(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.CHINESE);
-        customDateAdapter.addDateFormat(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
-        customDateAdapter.addDateFormat(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
+        CustomDateAdapter customDateAdapter = new CustomDateAdapter();
 
-//        Gson gson = new GsonBuilder()
-//                .registerTypeAdapter(Date.class, new DateTypeAdapter())  // 默认适配器
-//                .registerTypeAdapter(Date.class, new CustomDateAdapter(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.CHINESE))  // yyyy-MM-dd HH:mm:ss
-//                .registerTypeAdapter(Date.class, new CustomDateAdapter(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US))       // Nov 2, 2020 10:46:51 AM
-//                .registerTypeAdapter(Date.class, new CustomDateAdapter(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault())) // 根据服务器不一样而不一样
-//                .create();
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())  // 默认适配器
