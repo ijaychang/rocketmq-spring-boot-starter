@@ -70,6 +70,8 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
 			log.info("receive msgId: {}, tags : {}" , messageExt.getMsgId(), messageExt.getTags());
 			T t = parseMessage(messageExt);
 			Map<String, Object> ext = parseExtParam(messageExt);
+			String consumerGroup = getConsumer().getConsumerGroup();
+			ext.put(MessageExtConst.CONSUMER_GROUP, consumerGroup);
 			if( null != t && !process(t, ext)) {
 				log.warn("consume fail , ask for re-consume , msgId: {}", messageExt.getMsgId());
 				return ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;
