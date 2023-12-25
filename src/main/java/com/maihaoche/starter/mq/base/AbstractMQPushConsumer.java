@@ -50,6 +50,8 @@ public abstract class AbstractMQPushConsumer<T> extends AbstractMQConsumer<T> {
 			T t = parseMessage(messageExt);
 			// parse ext properties
 			Map<String, Object> ext = parseExtParam(messageExt);
+			String consumerGroup = getConsumer().getConsumerGroup();
+			ext.put(MessageExtConst.CONSUMER_GROUP, consumerGroup);
 			if( null != t && !process(t, ext)) {
 				log.warn("consume fail , ask for re-consume , msgId: {}", messageExt.getMsgId());
 				return ConsumeConcurrentlyStatus.RECONSUME_LATER;
