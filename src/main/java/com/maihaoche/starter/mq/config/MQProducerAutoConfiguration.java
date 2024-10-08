@@ -1,18 +1,24 @@
 package com.maihaoche.starter.mq.config;
 
 import com.maihaoche.starter.mq.annotation.MQProducer;
-import com.maihaoche.starter.mq.base.AbstractMQProducer;
+import com.maihaoche.starter.mq.annotation.MQTransactionProducer;
+import com.maihaoche.starter.mq.base.AbstractMQTransactionProducer;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * Created by yipin on 2017/6/29.
@@ -26,56 +32,60 @@ public class MQProducerAutoConfiguration extends MQBaseAutoConfiguration {
     @Setter
     private static DefaultMQProducer producer;
 
-    @PostConstruct
-    public void init() throws Exception {
+    @Autowired
+    private MQProperties mqProperties;
+
+    @Bean
+    public DefaultMQProducer exposeProducer() throws Exception {
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(MQProducer.class);
         //对于仅仅只存在消息消费者的项目，无需构建生产者
         if(CollectionUtils.isEmpty(beans)){
-            return;
+            return null;
         }
         if(producer == null) {
             Assert.notNull(mqProperties.getProducerGroup(), "producer group must be defined");
             Assert.notNull(mqProperties.getNameServerAddress(), "name server address must be defined");
-            producer = new DefaultMQProducer(mqProperties.getProducerGroup());
+            // 添加producerGroup后缀(用于区分不同的环境)
+            producer = new DefaultMQProducer(mqProperties.getProducerGroup() + mqProperties.getSuffix());
             producer.setNamesrvAddr(mqProperties.getNameServerAddress());
             producer.setSendMsgTimeout(mqProperties.getSendMsgTimeout());
+            producer.setSendMessageWithVIPChannel(mqProperties.getVipChannelEnabled());
+            producer.setRetryTimesWhenSendFailed(mqProperties.getRetryTimesWhenSendFailed());
             producer.start();
         }
-        // register default mq producer to spring context
-        registerBean(DefaultMQProducer.class.getName(), producer);
-
-        for (Map.Entry<String, Object> entry : beans.entrySet()) {
-            publishProducer(entry.getKey(), entry.getValue());
-        }
+        return producer;
     }
 
-    private void publishProducer(String beanName, Object bean) throws Exception {
-        if(!AbstractMQProducer.class.isAssignableFrom(bean.getClass())) {
-            throw new RuntimeException(beanName + " - producer未继承AbstractMQProducer");
+    @PostConstruct
+    public void configTransactionProducer() {
+        Map<String, Object> beans = applicationContext.getBeansWithAnnotation(MQTransactionProducer.class);
+        if(CollectionUtils.isEmpty(beans)){
+            return;
         }
-        AbstractMQProducer abstractMQProducer = (AbstractMQProducer) bean;
-        abstractMQProducer.setProducer(producer);
-        // begin build producer level topic
-        MQProducer mqProducer = applicationContext.findAnnotationOnBean(beanName, MQProducer.class);
-        String topic = mqProducer.topic();
-        if(!StringUtils.isEmpty(topic)) {
-            String transTopic = applicationContext.getEnvironment().getProperty(topic);
-            if(StringUtils.isEmpty(transTopic)) {
-                abstractMQProducer.setTopic(topic);
-            } else {
-                abstractMQProducer.setTopic(transTopic);
+        ExecutorService executorService = new ThreadPoolExecutor(beans.size(), beans.size()*2, 100, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(2000), new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread thread = new Thread(r);
+                thread.setName("client-transaction-msg-check-thread");
+                return thread;
             }
-        }
-        // begin build producer level tag
-        String tag = mqProducer.tag();
-        if(!StringUtils.isEmpty(tag)) {
-            String transTag = applicationContext.getEnvironment().getProperty(tag);
-            if(StringUtils.isEmpty(transTag)) {
-                abstractMQProducer.setTag(tag);
-            } else {
-                abstractMQProducer.setTag(transTag);
+        });
+        Environment environment = applicationContext.getEnvironment();
+        beans.entrySet().forEach( transactionProducer -> {
+            try {
+                AbstractMQTransactionProducer beanObj = AbstractMQTransactionProducer.class.cast(transactionProducer.getValue());
+                MQTransactionProducer anno = AnnotationUtils.findAnnotation(beanObj.getClass(),MQTransactionProducer.class);
+
+                // 添加producerGroup后缀(用于区分不同的环境)
+                TransactionMQProducer producer = new TransactionMQProducer(environment.resolvePlaceholders(anno.producerGroup() + mqProperties.getProducerGroup()));
+                producer.setNamesrvAddr(mqProperties.getNameServerAddress());
+                producer.setExecutorService(executorService);
+                producer.setTransactionListener(beanObj);
+                producer.start();
+                beanObj.setProducer(producer);
+            } catch (Exception e) {
+                log.error("build transaction producer error : {}", e);
             }
-        }
-        log.info(String.format("%s is ready to produce message", beanName));
+        });
     }
 }
