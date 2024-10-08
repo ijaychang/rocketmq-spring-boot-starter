@@ -19,6 +19,9 @@ public class MessageExtConst {
 
     public static final String PROPERTY_TOPIC = "TOPIC";
 
+    /** 消费者GROUP名称*/
+    public static final String CONSUMER_GROUP = "CONSUMER_GROUP";
+
     /**
      * 来自 MessageExt
      */

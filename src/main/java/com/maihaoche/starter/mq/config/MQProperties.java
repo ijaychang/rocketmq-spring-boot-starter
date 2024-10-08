@@ -32,4 +32,14 @@ public class MQProperties {
      */
     private Boolean vipChannelEnabled = Boolean.TRUE;
 
+    /***
+     * specified topic suffix(Used to distinguish the environment),it will affect the group(producer group or consumer group),topic
+     */
+    private String suffix = "";
+
+    /**
+     * 重试次数
+     */
+    private Integer retryTimesWhenSendFailed = 3;
+
 }
