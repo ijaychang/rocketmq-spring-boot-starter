@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,9 @@ public abstract class AbstractMQConsumer<T> {
             return null;
         }
         final Type type = this.getMessageType();
+        if (String.class.equals(type)) {
+            return (T)(new String(message.getBody(), StandardCharsets.UTF_8));
+        }
         if (type instanceof Class) {
             try {
                 T data = gson.fromJson(new String(message.getBody()), type);
