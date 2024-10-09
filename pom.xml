@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.6.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <properties>
@@ -14,12 +14,13 @@
         <jacoco.version>0.7.9</jacoco.version>
         <rocketmq.version>4.3.2</rocketmq.version>
         <file_encoding>UTF-8</file_encoding>
+        <server.id>central</server.id>
     </properties>
 
     <packaging>jar</packaging>
-    <name>spring-boot-starter-rocketmq</name>
+    <name>rocketmq-spring-boot-starter</name>
     <description>spring boot starter for rocketmq</description>
-    <url>https://github.com/maihaoche/rocketmq-spring-boot-starter</url>
+    <url>https://github.com/jaychang9/rocketmq-spring-boot-starter</url>
 
     <licenses>
         <license>
@@ -31,22 +32,22 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/maihaoche/rocketmq-spring-boot-starter</url>
-        <connection>scm:git:git://github.com/maihaoche/rocketmq-spring-boot-starter.git</connection>
-        <developerConnection>scm:git:git@github.com:maihaoche/rocketmq-spring-boot-starter.git</developerConnection>
+        <url>https://github.com/jaychang9/rocketmq-spring-boot-starter</url>
+        <connection>scm:git:git://github.com/jaychang9/rocketmq-spring-boot-starter.git</connection>
+        <developerConnection>scm:git:git@github.com:jaychang9/rocketmq-spring-boot-starter.git</developerConnection>
     </scm>
 
 
-    <groupId>com.maihaoche</groupId>
-    <artifactId>spring-boot-starter-rocketmq</artifactId>
+    <groupId>io.gitee.jaychang</groupId>
+    <artifactId>rocketmq-spring-boot-starter</artifactId>
     <version>1.0.0</version>
 
     <developers>
         <developer>
-            <email>suclogger@gmail.com</email>
-            <name>suclogger</name>
-            <url>https://github.com/suclogger</url>
-            <id>suclogger</id>
+            <email>jaychang1987@gmail.com</email>
+            <name>jaychang</name>
+            <url>https://github.com/jaychang1987</url>
+            <id>jaychang</id>
         </developer>
     </developers>
 
@@ -54,10 +55,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -86,7 +83,20 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>${server.id}</id>
+            <url>https://central.sonatype.com/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
         <profile>
             <id>release-to-oss</id>
