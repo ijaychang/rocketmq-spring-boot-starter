@@ -14,7 +14,6 @@
         <jacoco.version>0.7.9</jacoco.version>
         <rocketmq.version>4.3.2</rocketmq.version>
         <file_encoding>UTF-8</file_encoding>
-        <server.id>central</server.id>
     </properties>
 
     <packaging>jar</packaging>
@@ -40,7 +39,7 @@
 
     <groupId>io.gitee.jaychang</groupId>
     <artifactId>rocketmq-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <developers>
         <developer>
@@ -92,7 +91,7 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>${server.id}</id>
+            <id>central</id>
             <url>https://central.sonatype.com/</url>
         </snapshotRepository>
     </distributionManagement>
@@ -196,6 +195,17 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!--新账号的配置：将组件部署到OSSRH并将其发布到Central Repository-->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <tokenAuth>true</tokenAuth>
+                </configuration>
             </plugin>
 
         </plugins>
