@@ -1,6 +1,6 @@
-# spring boot starter for RocketMQ [![Build Status](https://travis-ci.org/maihaoche/rocketmq-spring-boot-starter.svg?branch=master)](https://travis-ci.org/maihaoche/rocketmq-spring-boot-starter) [![Coverage Status](https://coveralls.io/repos/github/maihaoche/rocketmq-spring-boot-starter/badge.svg?branch=master)](https://coveralls.io/github/maihaoche/rocketmq-spring-boot-starter?branch=master)
+# spring boot starter for RocketMQ [![Build Status](https://travis-ci.org/jaychang9/rocketmq-spring-boot-starter.svg?branch=master)](https://travis-ci.org/jaychang9/rocketmq-spring-boot-starter) [![Coverage Status](https://coveralls.io/repos/github/jaychang9/rocketmq-spring-boot-starter/badge.svg?branch=master)](https://coveralls.io/github/jaychang9/rocketmq-spring-boot-starter?branch=master)
 
-<p><a href="http://search.maven.org/#search%7Cga%7C1%7Ccom.maihaoche"><img src="https://maven-badges.herokuapp.com/maven-central/com.maihaoche/spring-boot-starter-rocketmq/badge.svg" alt="Maven Central" style="max-width:100%;"></a><a href="https://github.com/maihaoche/rocketmq-spring-boot-starter/releases"><img src="https://camo.githubusercontent.com/795f06dcbec8d5adcfadc1eb7a8ac9c7d5007fce/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f72656c656173652d646f776e6c6f61642d6f72616e67652e737667" alt="GitHub release" data-canonical-src="https://img.shields.io/badge/release-download-orange.svg" style="max-width:100%;"></a>
+<p><a href="https://central.sonatype.com/search?q=cn.jaychang"><img src="https://maven-badges.herokuapp.com/maven-central/cn.jaychang/spring-boot-starter-rocketmq/badge.svg" alt="Maven Central" style="max-width:100%;"></a><a href="https://github.com/jaychang9/rocketmq-spring-boot-starter/releases"><img src="https://camo.githubusercontent.com/795f06dcbec8d5adcfadc1eb7a8ac9c7d5007fce/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f72656c656173652d646f776e6c6f61642d6f72616e67652e737667" alt="GitHub release" data-canonical-src="https://img.shields.io/badge/release-download-orange.svg" style="max-width:100%;"></a>
 
 
 ### 项目介绍
@@ -30,11 +30,11 @@
 
 ##### 1. 添加maven依赖：
 
-```java
+```xml
 <dependency>
-    <groupId>com.maihaoche</groupId>
-    <artifactId>spring-boot-starter-rocketmq</artifactId>
-    <version>0.1.0</version>
+    <groupId>cn.jaychang</groupId>
+    <artifactId>rocketmq-spring-boot-starter</artifactId>
+    <version>1.0.2</version>
 </dependency>
 ```
 
@@ -66,7 +66,7 @@ class DemoApplication {
 
 ##### 4. 构建消息体
 
-通过我们提供的`Builder`类创建消息对象，详见[wiki](https://github.com/maihaoche/rocketmq-spring-boot-starter/wiki/构建消息体)
+通过我们提供的`Builder`类创建消息对象
 
 
 ```java
@@ -75,8 +75,6 @@ MessageBuilder.of(new MSG_POJO()).topic("some-msg-topic").build();
 
 
 ##### 5. 创建发送方
-
-详见[wiki](https://github.com/maihaoche/rocketmq-spring-boot-starter/wiki/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-Provider)：
 
 
 ```java
@@ -87,7 +85,6 @@ public class DemoProducer extends AbstractMQProducer{
 
 ##### 6. 创建消费方
 
-详见[wiki](https://github.com/maihaoche/rocketmq-spring-boot-starter/wiki/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-Consumer)：
 **支持springEL风格配置项解析**，如存在`suclogger-test-cluster`配置项，会优先将topic解析为配置项对应的值。
 
 ```java
