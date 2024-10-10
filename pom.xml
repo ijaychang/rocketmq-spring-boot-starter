@@ -23,10 +23,9 @@
 
     <licenses>
         <license>
-            <name>GNU General Public License, Version 3</name>
-            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
-            <distribution>manual</distribution>
-            <comments>A free, copyleft license for software and other kinds of works</comments>
+            <name>The Apache Software License, Version2.0</name>
+            <url>http://www.apache.org/licenses/</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
@@ -36,17 +35,22 @@
         <developerConnection>scm:git:git@github.com:jaychang9/rocketmq-spring-boot-starter.git</developerConnection>
     </scm>
 
+    <issueManagement>
+        <system>GitHub Issue Management</system>
+        <url>https://github.com/jaychang9/rocketmq-spring-boot-starter/issues</url>
+    </issueManagement>
 
-    <groupId>io.gitee.jaychang</groupId>
+    <groupId>cn.jaychang</groupId>
     <artifactId>rocketmq-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <developers>
         <developer>
-            <email>jaychang1987@gmail.com</email>
-            <name>jaychang</name>
-            <url>https://github.com/jaychang1987</url>
             <id>jaychang</id>
+            <name>jaychang</name>
+            <email>jaychang1987@gmail.com</email>
+            <url>https://jaychang.cn</url>
+            <timezone>+8</timezone>
         </developer>
     </developers>
 
@@ -200,7 +204,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--新账号的配置：将组件部署到OSSRH并将其发布到Central Repository-->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>

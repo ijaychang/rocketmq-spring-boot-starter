@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.gitee.jaychang.rocketmq.config.MQBaseAutoConfiguration,\
-io.gitee.jaychang.rocketmq.config.MQConsumerAutoConfiguration,\
-io.gitee.jaychang.rocketmq.config.MQProducerAutoConfiguration
+cn.jaychang.rocketmq.config.MQBaseAutoConfiguration,\
+cn.jaychang.rocketmq.config.MQConsumerAutoConfiguration,\
+cn.jaychang.rocketmq.config.MQProducerAutoConfiguration
