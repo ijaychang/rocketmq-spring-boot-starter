@@ -2,24 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.12.RELEASE</version>
         <relativePath/>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.jaychang</groupId>
+    <artifactId>rocketmq-spring-boot-starter</artifactId>
+    <version>1.0.2</version>
+    <packaging>jar</packaging>
+    <name>RocketMQ Spring Boot Starter</name>
+    <description>RocketMQ Spring Boot Starter</description>
+    <url>https://github.com/jaychang9/rocketmq-spring-boot-starter</url>
+
     <properties>
         <java.version>1.8</java.version>
         <jacoco.version>0.7.9</jacoco.version>
         <rocketmq.version>4.3.2</rocketmq.version>
         <file_encoding>UTF-8</file_encoding>
     </properties>
-
-    <packaging>jar</packaging>
-    <name>rocketmq-spring-boot-starter</name>
-    <description>spring boot starter for rocketmq</description>
-    <url>https://github.com/jaychang9/rocketmq-spring-boot-starter</url>
 
     <licenses>
         <license>
@@ -39,10 +43,6 @@
         <system>GitHub Issue Management</system>
         <url>https://github.com/jaychang9/rocketmq-spring-boot-starter/issues</url>
     </issueManagement>
-
-    <groupId>cn.jaychang</groupId>
-    <artifactId>rocketmq-spring-boot-starter</artifactId>
-    <version>1.0.2</version>
 
     <developers>
         <developer>
@@ -164,6 +164,7 @@
             </build>
         </profile>
     </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -214,7 +215,7 @@
                     <tokenAuth>true</tokenAuth>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
 </project>
